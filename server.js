@@ -1,8 +1,12 @@
 require('./config/config');
 
 const express = require('express');
-const app = express();
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const app = express();
+
+
+
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -10,37 +14,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-app.get('/usuario', (req, res) => {
-    /*Consultar datos*/
-    res.json('get Usuario');
-});
+app.use(require('./server/routes/usuario'));
 
-app.post('/usuario', (req, res) => {
-    /*Crear nuevos registros*/
-    res.json('post Usuario');
-});
-
-app.put('/usuario/:id', (req, res) => {
-    /*Actualizar Registros*/
-    let body = req.body;
-
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            mensaje: "El nombre es necesario"
-        });
-    } else {
-        res.json({
-            persona: body
-        });
+/* Conexión con BDD*/
+mongoose.connect('mongodb://localhost:27017/coffe', (err, res) => {
+    if (err) {
+        throw err;
     }
-
+    console.log("Base de datos ON LINE!");
 });
 
-app.delete('/usuario', (req, res) => {
-    /*Eliminar registros (cambiar a inactivo)*/
-    res.json('delete Usuario');
-});
 
 app.listen(process.env.PORT, () => {
     console.log("Escuchando en el puerto", process.env.PORT);
 });
+
+module.exports = app;
