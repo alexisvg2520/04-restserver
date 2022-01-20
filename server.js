@@ -2,10 +2,8 @@ require('./config/config');
 
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const app = express();
-
-
+const bodyParser = require('body-parser');
 
 
 // parse application/x-www-form-urlencoded
@@ -14,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
+//todos los endpoints
 app.use(require('./server/routes/usuario'));
 
 /* Conexión con BDD*/
@@ -29,4 +28,4 @@ app.listen(process.env.PORT, () => {
     console.log("Escuchando en el puerto", process.env.PORT);
 });
 
-module.exports = app;
+//module.exports = app;
